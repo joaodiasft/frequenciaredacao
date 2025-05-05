@@ -1,0 +1,949 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Frequência Nota Mil</title>
+    <style>
+        :root {
+            --primary: #e83f8e; /* Rosa */
+            --secondary: #000000; /* Preto */
+            --accent: #e83f8e; /* Rosa */
+            --light: #f8f9fa; /* Branco suave */
+            --dark: #212529; /* Preto mais claro */
+            --gray: #6c757d; /* Cinza */
+            --white: #ffffff; /* Branco */
+            --text: #212529; /* Cor do texto */
+            --text-light: #6c757d; /* Texto claro */
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+        }
+
+        @font-face {
+            font-family: 'Inter';
+            font-style: normal;
+            font-weight: 400;
+            src: url(https://fonts.gstatic.com/s/inter/v12/UcCO3FwrK3iLTeHuS_fvQtMwCp50KnMw2boKoduKmMEVuLyfAZ9hiA.woff2) format('woff2');
+        }
+
+        @font-face {
+            font-family: 'Inter';
+            font-style: normal;
+            font-weight: 600;
+            src: url(https://fonts.gstatic.com/s/inter/v12/UcCO3FwrK3iLTeHuS_fvQtMwCp50KnMw2boKoduKmMEVuGKYAZ9hiA.woff2) format('woff2');
+        }
+
+        body {
+            background-color: var(--light);
+            color: var(--text);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        /* Header */
+        .header {
+            background-color: var(--white);
+            color: var(--secondary);
+            padding: 1rem 0;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            text-decoration: none;
+        }
+
+        .logo img {
+            height: 100px;
+        }
+
+        .logo-text {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .logo-text h1 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 0.1rem;
+            line-height: 1.2;
+        }
+
+        .logo-text p {
+            font-size: 0.75rem;
+            color: var(--gray);
+            font-weight: 500;
+        }
+
+        .admin-tools {
+            display: flex;
+            gap: 0.5rem;
+            align-items: center;
+        }
+
+        .admin-btn {
+            background: none;
+            border: none;
+            color: var(--gray);
+            cursor: pointer;
+            font-size: 1rem;
+            transition: color 0.3s;
+        }
+
+        .admin-btn:hover {
+            color: var(--primary);
+        }
+
+        /* Main Content */
+        .main-container {
+            max-width: 800px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Card Styles */
+        .card {
+            background: var(--white);
+            border-radius: 12px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.05);
+            padding: 2rem;
+            margin-bottom: 2rem;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        .card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.1);
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        .card-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--secondary);
+        }
+
+        .card-badge {
+            background-color: var(--primary);
+            color: var(--white);
+            padding: 0.35rem 0.9rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        /* Form Styles */
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: var(--secondary);
+            font-size: 0.95rem;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 0.9rem 1.2rem;
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            background-color: var(--white);
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(232, 63, 142, 0.1);
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            background-color: var(--primary);
+            color: var(--white);
+            padding: 0.9rem 1.8rem;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            text-align: center;
+            text-decoration: none;
+            width: 100%;
+        }
+
+        .btn:hover {
+            background-color: #d12e7b;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(232, 63, 142, 0.3);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+        }
+
+        /* Status Messages */
+        .alert {
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
+            font-weight: 500;
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+            font-size: 0.95rem;
+        }
+
+        .alert i {
+            font-size: 1.2rem;
+            margin-top: 0.1rem;
+        }
+
+        .alert-success {
+            background-color: rgba(40, 167, 69, 0.1);
+            color: #28a745;
+            border-left: 4px solid #28a745;
+        }
+
+        .alert-warning {
+            background-color: rgba(255, 193, 7, 0.1);
+            color: #ffc107;
+            border-left: 4px solid #ffc107;
+        }
+
+        /* Presença Counter */
+        .presenca-counter {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            margin-top: 0.5rem;
+        }
+
+        .counter-number {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--primary);
+            line-height: 1;
+        }
+
+        .counter-label {
+            font-size: 1rem;
+            color: var(--gray);
+        }
+
+        /* Next Class Info */
+        .next-class {
+            background-color: var(--white);
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin-top: 2rem;
+            text-align: center;
+            border: 1px dashed rgba(0, 0, 0, 0.1);
+        }
+
+        .next-class-title {
+            font-size: 1.1rem;
+            color: var(--secondary);
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+
+        .next-class-date {
+            font-size: 1.5rem;
+            color: var(--primary);
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .next-class-desc {
+            color: var(--gray);
+            font-size: 0.9rem;
+        }
+
+        /* Footer */
+        .footer {
+            background-color: var(--secondary);
+            color: var(--white);
+            padding: 2rem 0;
+            margin-top: 3rem;
+        }
+
+        .footer-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            text-align: center;
+        }
+
+        .footer p {
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+
+        /* Modal de Senha */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background-color: var(--white);
+            border-radius: 12px;
+            width: 100%;
+            max-width: 400px;
+            padding: 2rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            animation: modalFadeIn 0.3s ease;
+        }
+
+        @keyframes modalFadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .modal-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--secondary);
+        }
+
+        .close-modal {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--gray);
+        }
+
+        /* Popup de Confirmação */
+        .popup {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: var(--white);
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            z-index: 1001;
+            text-align: center;
+            max-width: 90%;
+            width: 400px;
+            display: none;
+        }
+
+        .popup-icon {
+            font-size: 3rem;
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+
+        .popup-message {
+            margin-bottom: 1.5rem;
+            font-size: 1.1rem;
+        }
+
+        .popup-close {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header-container {
+                padding: 0 1.5rem;
+            }
+
+            .main-container {
+                padding: 0 1.5rem;
+            }
+
+            .card {
+                padding: 1.5rem;
+            }
+
+            .card-title {
+                font-size: 1.3rem;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .header-container {
+                flex-direction: column;
+                gap: 1rem;
+                padding: 1rem;
+            }
+
+            .logo {
+                margin-bottom: 0.5rem;
+            }
+
+            .admin-tools {
+                margin-top: 0.5rem;
+            }
+
+            .main-container {
+                padding: 0 1rem;
+                margin: 1rem auto;
+            }
+
+            .card {
+                padding: 1.25rem;
+            }
+
+            .alert {
+                flex-direction: column;
+                gap: 0.5rem;
+                align-items: flex-start;
+            }
+
+            .next-class-date {
+                font-size: 1.3rem;
+            }
+
+            .modal-content {
+                padding: 1.5rem;
+                margin: 0 1rem;
+            }
+
+            .popup {
+                width: 90%;
+                padding: 1.5rem;
+            }
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <header class="header">
+        <div class="header-container">
+            <a href="#" class="logo">
+                <img src="https://img.ge/i/YVGyF77.png" alt="Logo">
+                <div class="logo-text">
+                    <h1>Frequência Nota Mil</h1>
+                    <p>Sistema de registro de presença</p>
+                </div>
+            </a>
+            
+            <div class="admin-tools">
+                <button class="admin-btn" id="limparCacheBtn" title="Limpar todas as frequências">
+                    <i class="fas fa-eraser"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main class="main-container" id="app">
+        <!-- Conteúdo será renderizado aqui -->
+    </main>
+
+    <footer class="footer">
+        <div class="footer-container">
+            <p>© 2023 Frequência Nota Mil - Todos os direitos reservados</p>
+            <p>Dias de aula: Segundas, Quartas e Sábados</p>
+        </div>
+    </footer>
+
+    <!-- Modal para senha do PDF -->
+    <div id="pdfModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Acesso ao Relatório</h3>
+                <button class="close-modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="modalSenha" class="form-label">Digite a senha secreta:</label>
+                    <input type="password" id="modalSenha" class="form-control" placeholder="Senha secreta">
+                </div>
+                <button id="confirmarSenha" class="btn">
+                    <i class="fas fa-lock"></i> Acessar Relatório
+                </button>
+                <p id="mensagemErro" style="color: #dc3545; margin-top: 1rem; display: none;"></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal para limpar cache -->
+    <div id="limparCacheModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Limpar Todas as Frequências</h3>
+                <button class="close-modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="senhaLimparCache" class="form-label">Digite a senha para confirmar:</label>
+                    <input type="password" id="senhaLimparCache" class="form-control" placeholder="Senha de administrador">
+                </div>
+                <button id="confirmarLimpeza" class="btn" style="background-color: var(--gray);">
+                    <i class="fas fa-trash-alt"></i> Limpar Tudo
+                </button>
+                <p id="mensagemErroLimpeza" style="color: #dc3545; margin-top: 1rem; display: none;"></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Popup de confirmação -->
+    <div id="confirmacaoPopup" class="popup">
+        <div class="popup-icon">
+            <i class="fas fa-check-circle"></i>
+        </div>
+        <div class="popup-message" id="popupMessage">
+            Presença registrada com sucesso!
+        </div>
+        <button class="popup-close" id="fecharPopup">OK</button>
+    </div>
+
+    <!-- Incluindo a biblioteca jsPDF corretamente -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.25/jspdf.plugin.autotable.min.js"></script>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Inicializa o jsPDF
+            const { jsPDF } = window.jspdf;
+            const app = document.getElementById('app');
+            
+            // Elementos dos modais
+            const pdfModal = document.getElementById('pdfModal');
+            const limparCacheModal = document.getElementById('limparCacheModal');
+            const closeModals = document.querySelectorAll('.close-modal');
+            const confirmarSenha = document.getElementById('confirmarSenha');
+            const confirmarLimpeza = document.getElementById('confirmarLimpeza');
+            const mensagemErro = document.getElementById('mensagemErro');
+            const mensagemErroLimpeza = document.getElementById('mensagemErroLimpeza');
+            const limparCacheBtn = document.getElementById('limparCacheBtn');
+            
+            // Elementos do popup
+            const confirmacaoPopup = document.getElementById('confirmacaoPopup');
+            const fecharPopup = document.getElementById('fecharPopup');
+            
+            // Fechar modais ao clicar no X ou fora
+            closeModals.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const modal = btn.closest('.modal');
+                    modal.style.display = 'none';
+                    if (modal.id === 'pdfModal') {
+                        mensagemErro.style.display = 'none';
+                    } else {
+                        mensagemErroLimpeza.style.display = 'none';
+                    }
+                });
+            });
+            
+            window.addEventListener('click', (e) => {
+                if (e.target.classList.contains('modal')) {
+                    e.target.style.display = 'none';
+                    mensagemErro.style.display = 'none';
+                    mensagemErroLimpeza.style.display = 'none';
+                }
+            });
+            
+            // Fechar popup
+            fecharPopup.addEventListener('click', () => {
+                confirmacaoPopup.style.display = 'none';
+            });
+            
+            // Verificar se hoje é dia de aula (segunda, quarta ou sábado)
+            const hoje = new Date();
+            const diaSemana = hoje.getDay(); // 0=Domingo, 1=Segunda, ..., 6=Sábado
+            const diaAula = diaSemana === 1 || diaSemana === 3 || diaSemana === 6;
+            
+            // Formatar data para chave no LocalStorage
+            const dataFormatada = formatarData(hoje);
+            const dataExtenso = hoje.toLocaleDateString('pt-BR', { 
+                weekday: 'long', 
+                year: 'numeric', 
+                month: 'long', 
+                day: 'numeric' 
+            });
+            
+            // Renderizar interface
+            renderizarInterface();
+            
+            function renderizarInterface() {
+                const presencasHoje = JSON.parse(localStorage.getItem(`presenca_${dataFormatada}`)) || [];
+                const proximaAula = calcularProximaAula();
+                
+                let html = `
+                    <div class="card">
+                        <div class="card-header">
+                            <h2 class="card-title">Registro de Frequência</h2>
+                            <span class="card-badge">${diaAula ? 'Aula Hoje' : 'Sem Aula'}</span>
+                        </div>
+                `;
+                
+                if (diaAula) {
+                    html += `
+                        <div class="alert alert-success">
+                            <i class="fas fa-calendar-check"></i>
+                            <div>
+                                <strong>Hoje é dia de aula!</strong> (${dataExtenso})<br>
+                                Registre sua presença abaixo.
+                            </div>
+                        </div>
+                    `;
+                    
+                    if (presencasHoje.length > 0) {
+                        html += `
+                            <div class="alert alert-success">
+                                <i class="fas fa-users"></i>
+                                <div>
+                                    <strong>Presenças registradas hoje:</strong>
+                                    <div class="presenca-counter">
+                                        <span class="counter-number">${presencasHoje.length}</span>
+                                        <span class="counter-label">aluno(s)</span>
+                                    </div>
+                                </div>
+                            </div>
+                        `;
+                    }
+                    
+                    html += `
+                        <form id="formPresenca">
+                            <div class="form-group">
+                                <label for="nomeAluno" class="form-label">Seu Nome Completo:</label>
+                                <input type="text" id="nomeAluno" class="form-control" placeholder="Digite seu nome completo" required>
+                            </div>
+                            <button type="button" id="registrarPresenca" class="btn">
+                                <i class="fas fa-user-check"></i> Registrar Presença
+                            </button>
+                        </form>
+                    `;
+                } else {
+                    html += `
+                        <div class="alert alert-warning">
+                            <i class="fas fa-calendar-times"></i>
+                            <div>
+                                <strong>Hoje não há aula.</strong> (${dataExtenso})<br>
+                                Veja abaixo quando será a próxima aula.
+                            </div>
+                        </div>
+                        <div class="next-class">
+                            <h3 class="next-class-title">Próxima Aula:</h3>
+                            <div class="next-class-date">${proximaAula.data}</div>
+                            <p class="next-class-desc">${proximaAula.diasRestantes}</p>
+                        </div>
+                    `;
+                }
+                
+                // Botão para gerar relatório
+                html += `
+                    <div style="margin-top: 2rem;">
+                        <button type="button" id="gerarRelatorio" class="btn">
+                            <i class="fas fa-file-pdf"></i> Gerar Relatório
+                        </button>
+                    </div>
+                `;
+                
+                html += `</div>`;
+                
+                app.innerHTML = html;
+                
+                // Event listeners
+                if (diaAula) {
+                    document.getElementById('registrarPresenca').addEventListener('click', registrarPresenca);
+                }
+                
+                document.getElementById('gerarRelatorio').addEventListener('click', function() {
+                    pdfModal.style.display = 'flex';
+                    document.getElementById('modalSenha').focus();
+                });
+                
+                confirmarSenha.addEventListener('click', verificarSenhaPDF);
+                confirmarLimpeza.addEventListener('click', verificarSenhaLimpeza);
+                
+                // Permitir pressionar Enter nos campos de senha
+                document.getElementById('modalSenha').addEventListener('keypress', function(e) {
+                    if (e.key === 'Enter') {
+                        verificarSenhaPDF();
+                    }
+                });
+                
+                document.getElementById('senhaLimparCache').addEventListener('keypress', function(e) {
+                    if (e.key === 'Enter') {
+                        verificarSenhaLimpeza();
+                    }
+                });
+            }
+            
+            // Abrir modal de limpeza
+            limparCacheBtn.addEventListener('click', function() {
+                limparCacheModal.style.display = 'flex';
+                document.getElementById('senhaLimparCache').focus();
+            });
+            
+            function registrarPresenca() {
+                const nomeAluno = document.getElementById('nomeAluno').value.trim();
+                
+                if (!nomeAluno) {
+                    alert('Por favor, digite seu nome completo.');
+                    return;
+                }
+                
+                const presencasHoje = JSON.parse(localStorage.getItem(`presenca_${dataFormatada}`)) || [];
+                
+                // Verificar se o aluno já registrou presença hoje
+                const alunoJaRegistrado = presencasHoje.some(p => 
+                    p.nome.toLowerCase() === nomeAluno.toLowerCase()
+                );
+                
+                if (alunoJaRegistrado) {
+                    alert('Você já registrou presença hoje!');
+                    return;
+                }
+                
+                // Adicionar nova presença
+                const novaPresenca = {
+                    nome: nomeAluno,
+                    data: dataFormatada,
+                    horario: new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' }),
+                    timestamp: new Date().getTime()
+                };
+                
+                presencasHoje.push(novaPresenca);
+                localStorage.setItem(`presenca_${dataFormatada}`, JSON.stringify(presencasHoje));
+                
+                // Mostrar popup de confirmação
+                document.getElementById('popupMessage').textContent = `Presença registrada com sucesso para ${nomeAluno} às ${novaPresenca.horario}`;
+                confirmacaoPopup.style.display = 'block';
+                
+                // Limpar campo e recarregar interface
+                document.getElementById('nomeAluno').value = '';
+                renderizarInterface();
+            }
+            
+            function formatarData(data) {
+                const dia = String(data.getDate()).padStart(2, '0');
+                const mes = String(data.getMonth() + 1).padStart(2, '0');
+                const ano = data.getFullYear();
+                return `${dia}-${mes}-${ano}`;
+            }
+            
+            function calcularProximaAula() {
+                const hoje = new Date();
+                let proximaAula = new Date(hoje);
+                let diasRestantes = 0;
+                
+                // Dias da semana: 0=Dom, 1=Seg, 2=Ter, 3=Qua, 4=Qui, 5=Sex, 6=Sáb
+                
+                if (hoje.getDay() === 6) { // Sábado
+                    // Próxima aula é segunda (2 dias)
+                    diasRestantes = 2;
+                    proximaAula.setDate(hoje.getDate() + 2);
+                }
+                else if (hoje.getDay() === 0) { // Domingo
+                    // Próxima aula é segunda (1 dia)
+                    diasRestantes = 1;
+                    proximaAula.setDate(hoje.getDate() + 1);
+                }
+                else if (hoje.getDay() === 1) { // Segunda
+                    // Próxima aula é quarta (2 dias)
+                    diasRestantes = 2;
+                    proximaAula.setDate(hoje.getDate() + 2);
+                }
+                else if (hoje.getDay() === 2) { // Terça
+                    // Próxima aula é quarta (1 dia)
+                    diasRestantes = 1;
+                    proximaAula.setDate(hoje.getDate() + 1);
+                }
+                else if (hoje.getDay() === 3) { // Quarta
+                    // Próxima aula é sábado (3 dias)
+                    diasRestantes = 3;
+                    proximaAula.setDate(hoje.getDate() + 3);
+                }
+                else if (hoje.getDay() === 4 || hoje.getDay() === 5) { // Quinta ou Sexta
+                    // Próxima aula é sábado
+                    diasRestantes = 6 - hoje.getDay();
+                    proximaAula.setDate(hoje.getDate() + diasRestantes);
+                }
+                
+                return {
+                    data: proximaAula.toLocaleDateString('pt-BR', { 
+                        weekday: 'long', 
+                        day: 'numeric', 
+                        month: 'long' 
+                    }),
+                    diasRestantes: diasRestantes === 1 ? 'Amanhã' : `Em ${diasRestantes} dias`
+                };
+            }
+            
+            function verificarSenhaPDF() {
+                const senha = document.getElementById('modalSenha').value.trim();
+                const SENHA_SECRETA = 'milnave'; // Senha secreta para o PDF
+                
+                if (senha !== SENHA_SECRETA) {
+                    mensagemErro.textContent = 'Senha incorreta! Tente novamente.';
+                    mensagemErro.style.display = 'block';
+                    return;
+                }
+                
+                pdfModal.style.display = 'none';
+                document.getElementById('modalSenha').value = '';
+                mensagemErro.style.display = 'none';
+                gerarRelatorioPDF();
+            }
+            
+            function verificarSenhaLimpeza() {
+                const senha = document.getElementById('senhaLimparCache').value.trim();
+                const SENHA_ADMIN = 'joaoredacao'; // Senha para limpar cache
+                
+                if (senha !== SENHA_ADMIN) {
+                    mensagemErroLimpeza.textContent = 'Senha incorreta! Ação não autorizada.';
+                    mensagemErroLimpeza.style.display = 'block';
+                    return;
+                }
+                
+                // Limpar todo o localStorage
+                localStorage.clear();
+                limparCacheModal.style.display = 'none';
+                document.getElementById('senhaLimparCache').value = '';
+                mensagemErroLimpeza.style.display = 'none';
+                
+                // Mostrar mensagem de sucesso
+                alert('Todas as frequências foram apagadas com sucesso! O sistema será reiniciado.');
+                renderizarInterface();
+            }
+            
+            function gerarRelatorioPDF() {
+                // Coletar todas as presenças
+                let todasPresencas = [];
+                for (let i = 0; i < localStorage.length; i++) {
+                    const key = localStorage.key(i);
+                    if (key.startsWith('presenca_')) {
+                        const presencasDia = JSON.parse(localStorage.getItem(key));
+                        todasPresencas = todasPresencas.concat(presencasDia);
+                    }
+                }
+                
+                if (todasPresencas.length === 0) {
+                    alert('Nenhuma presença registrada ainda.');
+                    return;
+                }
+                
+                // Ordenar por data (mais recente primeiro)
+                todasPresencas.sort((a, b) => b.timestamp - a.timestamp);
+                
+                try {
+                    // Criar PDF
+                    const doc = new jsPDF();
+                    
+                    // Cabeçalho
+                    doc.setFillColor(232, 63, 142);
+                    doc.rect(0, 0, 210, 30, 'F');
+                    doc.setTextColor(255, 255, 255);
+                    doc.setFontSize(20);
+                    doc.text('Relatório de Frequência', 105, 20, { align: 'center' });
+                    
+                    // Corpo
+                    doc.setTextColor(0, 0, 0);
+                    doc.setFontSize(12);
+                    
+                    // Tabela
+                    const headers = ['Data', 'Nome do Aluno', 'Horário'];
+                    const data = todasPresencas.map(p => [p.data, p.nome, p.horario]);
+                    
+                    doc.autoTable({
+                        head: [headers],
+                        body: data,
+                        startY: 35,
+                        theme: 'grid',
+                        headStyles: {
+                            fillColor: [33, 37, 41],
+                            textColor: [255, 255, 255],
+                            fontSize: 10
+                        },
+                        bodyStyles: {
+                            fontSize: 9
+                        },
+                        alternateRowStyles: {
+                            fillColor: [248, 249, 250]
+                        },
+                        margin: { top: 35 }
+                    });
+                    
+                    // Rodapé
+                    doc.setFontSize(10);
+                    doc.setTextColor(100, 100, 100);
+                    doc.text(`Total de registros: ${todasPresencas.length}`, 14, doc.internal.pageSize.height - 10);
+                    doc.text('Frequência Nota Mil', 105, doc.internal.pageSize.height - 10, { align: 'center' });
+                    doc.text(new Date().toLocaleDateString('pt-BR'), 196, doc.internal.pageSize.height - 10, { align: 'right' });
+                    
+                    // Salvar
+                    doc.save(`frequencia_nota_mil_${dataFormatada}.pdf`);
+                } catch (error) {
+                    console.error('Erro ao gerar PDF:', error);
+                    alert('Ocorreu um erro ao gerar o PDF. Por favor, tente novamente.');
+                }
+            }
+        });
+    </script>
+</body>
+</html>
